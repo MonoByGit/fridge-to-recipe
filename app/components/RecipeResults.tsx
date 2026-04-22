@@ -28,8 +28,8 @@ export default function RecipeResults({ pantry, onSelect }: Props) {
 
   return (
     <div className="animate-slide-up">
-      <p className="text-sm mb-4" style={{ color: "var(--text-secondary)" }}>
-        {recipes.length} recepten gevonden op basis van jouw ingrediënten
+      <p className="taf-label mb-4">
+        {recipes.length} recepten gevonden
       </p>
 
       <div className="space-y-4">
@@ -65,24 +65,24 @@ export default function RecipeResults({ pantry, onSelect }: Props) {
                     {matchLabel} ({pct}%)
                   </span>
                   {recipe.prepTime !== undefined && (
-                    <span className="text-xs px-2 py-1 rounded-full"
-                      style={{ background: "#f5f5f7", color: "var(--text-secondary)" }}>
+                    <span className="text-xs px-2 py-1 rounded-full font-medium"
+                      style={{ background: "var(--surface-alt)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}>
                       ⏱ {(recipe.prepTime ?? 0) + (recipe.cookTime ?? 0)} min
                     </span>
                   )}
-                  <span className="text-xs px-2 py-1 rounded-full"
-                    style={{ background: "#f5f5f7", color: "var(--text-secondary)" }}>
+                  <span className="text-xs px-2 py-1 rounded-full font-medium"
+                    style={{ background: "var(--surface-alt)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}>
                     {difficultyLabel(recipe.difficulty)}
                   </span>
-                  <span className="text-xs px-2 py-1 rounded-full"
-                    style={{ background: "#f5f5f7", color: "var(--text-secondary)" }}>
-                    {recipe.servings} personen
+                  <span className="text-xs px-2 py-1 rounded-full font-medium"
+                    style={{ background: "var(--surface-alt)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}>
+                    {recipe.servings} pers.
                   </span>
                 </div>
               </div>
 
               <div className="h-1 rounded-b-xl" style={{
-                background: `linear-gradient(to right, ${pct >= 80 ? "#34C759" : pct >= 60 ? "#FF9500" : "#FF3B30"} ${pct}%, #f0f0f0 ${pct}%)`
+                background: `linear-gradient(to right, ${pct >= 80 ? "#34C759" : pct >= 60 ? "#FF9500" : "#FF3B30"} ${pct}%, rgba(52,199,89,0.08) ${pct}%)`
               }} />
             </div>
           );

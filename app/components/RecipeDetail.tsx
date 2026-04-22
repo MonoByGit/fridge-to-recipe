@@ -1,7 +1,6 @@
 "use client";
 
 import { Recipe } from "../types";
-import { ALBERT_HEIJN_URL } from "../lib/recipes";
 
 interface Props {
   recipe: Recipe;
@@ -102,19 +101,12 @@ export default function RecipeDetail({ recipe, pantry }: Props) {
                   </span>
                 </div>
                 {!have && !ing.optional && (
-                  <a
-                    href={ALBERT_HEIJN_URL(ing.ingredientName)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs px-2 py-1 rounded-lg font-medium transition-colors"
-                    style={{
-                      background: "#fff5e6",
-                      color: "#cc7700",
-                    }}
-                    onClick={(e) => e.stopPropagation()}
+                  <span
+                    className="text-xs px-2 py-1 rounded-lg font-medium"
+                    style={{ background: "#f5f5f7", color: "var(--text-secondary)" }}
                   >
-                    Koop bij AH →
-                  </a>
+                    ontbreekt
+                  </span>
                 )}
               </li>
             );
@@ -124,24 +116,21 @@ export default function RecipeDetail({ recipe, pantry }: Props) {
 
       {missing.length > 0 && (
         <div className="card p-4 mb-4" style={{ borderLeft: "3px solid var(--orange)" }}>
-          <h2 className="font-semibold text-sm mb-2" style={{ color: "var(--text)" }}>
-            🛒 {missing.length} ingrediënt{missing.length > 1 ? "en" : ""} nog nodig
+          <h2 className="font-semibold text-sm mb-1" style={{ color: "var(--text)" }}>
+            💡 {missing.length} ingredient{missing.length > 1 ? "en" : ""} ontbreekt
           </h2>
           <p className="text-sm mb-3" style={{ color: "var(--text-secondary)" }}>
-            Bestel online bij Albert Heijn of Bol.com
+            Probeer een alternatief uit je koelkast, of kies een recept dat beter past bij wat je hebt.
           </p>
           <div className="flex gap-2 flex-wrap">
             {missing.map((ing) => (
-              <a
+              <span
                 key={ing.ingredientId}
-                href={ALBERT_HEIJN_URL(ing.ingredientName)}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="text-sm px-3 py-1.5 rounded-lg font-medium"
-                style={{ background: "#fff5e6", color: "#cc7700" }}
+                style={{ background: "#f5f5f7", color: "var(--text-secondary)" }}
               >
-                {ing.ingredientName} →
-              </a>
+                {ing.ingredientName}
+              </span>
             ))}
           </div>
         </div>

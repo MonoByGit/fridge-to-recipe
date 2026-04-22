@@ -202,8 +202,3 @@ export function matchRecipes(pantry: string[]): Recipe[] {
     .sort((a, b) => (b.matchPercent ?? 0) - (a.matchPercent ?? 0));
 }
 
-export const ALBERT_HEIJN_URL = (ingredient: string) =>
-  `https://www.ah.nl/zoeken?query=${encodeURIComponent(ingredient)}`;
-
-export const BOL_URL = (ingredient: string) =>
-  `https://www.bol.com/nl/nl/s/?searchtext=${encodeURIComponent(ingredient)}`;

@@ -42,22 +42,23 @@ export default function Home() {
 
   return (
     <div className="min-h-screen" style={{ background: "var(--bg)" }}>
-      <nav style={{ background: "var(--surface)", borderBottom: "1px solid rgba(0,0,0,0.08)" }}
-        className="sticky top-0 z-10 px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          {screen !== "input" && (
+      <nav className="taf-nav sticky top-0 z-10 px-4 py-3 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          {screen !== "input" ? (
             <button
               onClick={handleBack}
-              className="p-2 rounded-full hover:bg-gray-100 transition-colors mr-1"
+              className="p-2 rounded-full transition-colors mr-1"
+              style={{ color: "#9ca89e" }}
               aria-label="Terug"
             >
               <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-                <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
+          ) : (
+            <span className="taf-nav-logo">TAF</span>
           )}
-          <span className="text-xl">🥗</span>
-          <span className="font-semibold text-lg" style={{ color: "var(--text)" }}>
+          <span className="taf-nav-title">
             {screen === "input" && "Koelkast"}
             {screen === "pantry" && "Mijn ingrediënten"}
             {screen === "results" && "Recepten"}
@@ -68,11 +69,11 @@ export default function Home() {
           {pantry.length > 0 && (
             <button
               onClick={() => setScreen("pantry")}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium transition-colors"
-              style={{ background: "#e8f8ed", color: "#1a7a34" }}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-bold transition-colors"
+              style={{ background: "rgba(52,199,89,0.18)", color: "var(--green)" }}
             >
               <span>{pantry.length}</span>
-              <span>ingrediënten</span>
+              <span>{pantry.length === 1 ? "item" : "items"}</span>
             </button>
           )}
         </div>

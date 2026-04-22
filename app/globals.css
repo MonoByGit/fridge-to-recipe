@@ -2,109 +2,224 @@
 
 :root {
   --green: #34C759;
+  --green-dark: #28a046;
+  --green-light: #e6f9ed;
   --orange: #FF9500;
+  --orange-light: #fff4e0;
   --red: #FF3B30;
   --blue: #0071e3;
-  --bg: #f5f5f7;
+  --bg: #f0f4f0;
   --surface: #ffffff;
-  --text: #1d1d1f;
-  --text-secondary: #6e6e73;
+  --surface-alt: #f7faf7;
+  --text: #111a13;
+  --text-secondary: #52695a;
+  --border: rgba(52,199,89,0.15);
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
 }
 
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'cv02', 'cv03', 'cv04';
 }
 
 * {
   box-sizing: border-box;
 }
 
-.card {
-  background: var(--surface);
-  border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+/* TAF Nav brand bar */
+.taf-nav {
+  background: var(--text);
+  border-bottom: none;
 }
 
+.taf-nav-logo {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: -0.5px;
+  color: var(--green);
+}
+
+.taf-nav-title {
+  font-weight: 600;
+  font-size: 16px;
+  color: #fff;
+}
+
+/* Cards */
+.card {
+  background: var(--surface);
+  border-radius: 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+}
+
+/* Hero header on input screen */
+.taf-hero {
+  background: linear-gradient(135deg, var(--text) 0%, #1e3a24 100%);
+  border-radius: 24px;
+  padding: 28px 24px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.taf-hero::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: rgba(52,199,89,0.12);
+  pointer-events: none;
+}
+
+.taf-hero::after {
+  content: '';
+  position: absolute;
+  bottom: -60px;
+  left: -20px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: rgba(52,199,89,0.07);
+  pointer-events: none;
+}
+
+/* Buttons */
 .btn-primary {
   background: var(--green);
   color: white;
   border: none;
-  border-radius: 12px;
-  padding: 14px 24px;
-  font-size: 16px;
-  font-weight: 600;
+  border-radius: 14px;
+  padding: 15px 28px;
+  font-size: 15px;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.15s ease;
+  letter-spacing: -0.2px;
 }
 
 .btn-primary:hover {
-  background: #2db14e;
-  transform: scale(1.02);
+  background: var(--green-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(52,199,89,0.35);
 }
 
 .btn-primary:active {
-  transform: scale(0.98);
+  transform: translateY(0);
+  box-shadow: none;
 }
 
 .btn-secondary {
   background: transparent;
   color: var(--green);
   border: 2px solid var(--green);
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 12px 24px;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
+.btn-secondary:hover {
+  background: var(--green-light);
+}
+
+/* Ingredient pills */
 .ingredient-tag {
-  background: #e8f8ed;
-  color: #1a7a34;
-  border-radius: 20px;
+  background: var(--green-light);
+  color: var(--green-dark);
+  border: 1.5px solid rgba(52,199,89,0.25);
+  border-radius: 100px;
   padding: 6px 14px;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 600;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .ingredient-tag:hover {
-  background: #d0f0da;
+  background: rgba(52,199,89,0.2);
+  border-color: var(--green);
 }
 
+/* Recipe cards */
 .recipe-card {
   background: var(--surface);
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-  transition: all 0.25s ease;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
   cursor: pointer;
 }
 
 .recipe-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(52,199,89,0.3);
 }
 
+/* Match badges */
 .match-badge {
-  border-radius: 20px;
+  border-radius: 100px;
   padding: 4px 12px;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1px;
 }
 
-.match-high { background: #e8f8ed; color: #1a7a34; }
-.match-medium { background: #fff5e6; color: #cc7700; }
-.match-low { background: #ffe8e7; color: #cc2e26; }
+.match-high { background: var(--green-light); color: var(--green-dark); border: 1.5px solid rgba(52,199,89,0.3); }
+.match-medium { background: var(--orange-light); color: #a05c00; border: 1.5px solid rgba(255,149,0,0.25); }
+.match-low { background: #fff0ef; color: #b02820; border: 1.5px solid rgba(255,59,48,0.2); }
 
+/* Input field */
+.taf-input {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: 2px solid rgba(52,199,89,0.2);
+  background: var(--surface);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.taf-input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 4px rgba(52,199,89,0.12);
+}
+
+.taf-input::placeholder {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* Section labels */
+.taf-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* Animations */
 @keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
+  from { transform: translateY(16px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
 
@@ -114,9 +229,9 @@ body {
 }
 
 .animate-slide-up {
-  animation: slideUp 0.3s ease forwards;
+  animation: slideUp 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.25s ease forwards;
+  animation: fadeIn 0.2s ease forwards;
 }
