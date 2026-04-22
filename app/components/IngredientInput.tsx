@@ -94,13 +94,13 @@ export default function IngredientInput({ pantry, onAdd, onViewPantry, onFindRec
         </div>
       )}
 
-      {pantry.length === 0 && !input && (
+      {!input && (
         <div className="mb-4">
           <p className="text-xs font-medium mb-2 px-1" style={{ color: "var(--text-secondary)" }}>
-            Veelgebruikte ingrediënten
+            {pantry.length === 0 ? "Veelgebruikte ingrediënten" : "Meer toevoegen"}
           </p>
           <div className="flex flex-wrap gap-2">
-            {SUGGESTIONS.slice(0, 12).map((s) => (
+            {SUGGESTIONS.filter((s) => !pantry.includes(s)).slice(0, 12).map((s) => (
               <button
                 key={s}
                 onClick={() => handleAdd(s)}
