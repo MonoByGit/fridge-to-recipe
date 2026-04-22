@@ -198,7 +198,7 @@ export function matchRecipes(pantry: string[]): Recipe[] {
 
     return { ...recipe, matchCount: matched.length, matchPercent };
   })
-    .filter((r) => (r.matchPercent ?? 0) >= 40)
+    .filter((r) => (r.matchCount ?? 0) >= 1)
     .sort((a, b) => (b.matchPercent ?? 0) - (a.matchPercent ?? 0));
 }
 
