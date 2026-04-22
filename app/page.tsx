@@ -1,18 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import IngredientInput from "./components/IngredientInput";
 import PantryView from "./components/PantryView";
 import RecipeResults from "./components/RecipeResults";
 import RecipeDetail from "./components/RecipeDetail";
 import { Recipe } from "./types";
+import { Lang, detectLang, getT } from "./lib/i18n";
 
 type Screen = "input" | "pantry" | "results" | "detail";
+
+const SAVED_KEY = "taf_saved_recipes";
 
 export default function Home() {
   const [screen, setScreen] = useState<Screen>("input");
   const [pantry, setPantry] = useState<string[]>([]);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+  const [lang, setLang] = useState<Lang>("nl");
+  const [savedIds, setSavedIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    setLang(detectLang());
+    try {
+      const stored = localStorage.getItem(SAVED_KEY);
+      if (stored) setSavedIds(JSON.parse(stored));
+    } catch {}
+  }, []);
+
+  const t = getT(lang);
 
   const addIngredient = (name: string) => {
     const normalized = name.trim().toLowerCase();
@@ -40,6 +55,24 @@ export default function Home() {
     else if (screen === "pantry") setScreen("input");
   };
 
+  const handleNewSearch = () => {
+    setPantry([]);
+    setSelectedRecipe(null);
+    setScreen("input");
+  };
+
+  const handleToggleSave = (recipe: Recipe) => {
+    setSavedIds((prev) => {
+      const next = prev.includes(recipe.id)
+        ? prev.filter((id) => id !== recipe.id)
+        : [...prev, recipe.id];
+      try {
+        localStorage.setItem(SAVED_KEY, JSON.stringify(next));
+      } catch {}
+      return next;
+    });
+  };
+
   return (
     <div className="min-h-screen" style={{ background: "var(--bg)" }}>
       <nav className="taf-nav sticky top-0 z-10 px-4 py-3 flex items-center justify-between">
@@ -49,7 +82,7 @@ export default function Home() {
               onClick={handleBack}
               className="p-2 rounded-full transition-colors mr-1"
               style={{ color: "#9ca89e" }}
-              aria-label="Terug"
+              aria-label={t.back}
             >
               <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
                 <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -59,10 +92,10 @@ export default function Home() {
             <span className="taf-nav-logo">TAF</span>
           )}
           <span className="taf-nav-title">
-            {screen === "input" && "Koelkast"}
-            {screen === "pantry" && "Mijn ingrediënten"}
-            {screen === "results" && "Recepten"}
-            {screen === "detail" && (selectedRecipe?.title ?? "Recept")}
+            {screen === "input" && t.fridge}
+            {screen === "pantry" && t.myIngredients}
+            {screen === "results" && t.recipes}
+            {screen === "detail" && (selectedRecipe?.title ?? t.recipe)}
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -100,10 +133,19 @@ export default function Home() {
           <RecipeResults
             pantry={pantry}
             onSelect={handleSelectRecipe}
+            onNewSearch={handleNewSearch}
+            lang={lang}
           />
         )}
         {screen === "detail" && selectedRecipe && (
-          <RecipeDetail recipe={selectedRecipe} pantry={pantry} />
+          <RecipeDetail
+            recipe={selectedRecipe}
+            pantry={pantry}
+            isSaved={savedIds.includes(selectedRecipe.id)}
+            onToggleSave={() => handleToggleSave(selectedRecipe)}
+            onNewSearch={handleNewSearch}
+            lang={lang}
+          />
         )}
       </main>
     </div>

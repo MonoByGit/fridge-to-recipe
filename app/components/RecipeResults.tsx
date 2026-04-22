@@ -3,13 +3,17 @@
 import { useMemo } from "react";
 import { matchRecipes } from "../lib/recipes";
 import { Recipe } from "../types";
+import { Lang, getT } from "../lib/i18n";
 
 interface Props {
   pantry: string[];
   onSelect: (recipe: Recipe) => void;
+  onNewSearch?: () => void;
+  lang?: Lang;
 }
 
-export default function RecipeResults({ pantry, onSelect }: Props) {
+export default function RecipeResults({ pantry, onSelect, onNewSearch, lang = "nl" }: Props) {
+  const t = getT(lang);
   const recipes = useMemo(() => matchRecipes(pantry), [pantry]);
 
   if (recipes.length === 0) {
@@ -17,26 +21,53 @@ export default function RecipeResults({ pantry, onSelect }: Props) {
       <div className="text-center py-16 animate-fade-in">
         <div className="text-5xl mb-4">🤷</div>
         <h2 className="text-xl font-semibold mb-2" style={{ color: "var(--text)" }}>
-          Geen recepten gevonden
+          {t.noRecipes}
         </h2>
         <p style={{ color: "var(--text-secondary)" }}>
-          Voeg meer ingrediënten toe om recepten te ontdekken
+          {t.noRecipesHint}
         </p>
+        {onNewSearch && (
+          <button
+            onClick={onNewSearch}
+            className="mt-6 btn-secondary flex items-center gap-2 mx-auto"
+          >
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2"/>
+              <path d="M21 21l-4.35-4.35" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+            {t.newSearch}
+          </button>
+        )}
       </div>
     );
   }
 
   return (
     <div className="animate-slide-up">
-      <p className="taf-label mb-4">
-        {recipes.length} recepten gevonden
-      </p>
+      <div className="flex items-center justify-between mb-4">
+        <p className="taf-label">
+          {t.recipesFound(recipes.length)}
+        </p>
+        {onNewSearch && (
+          <button
+            onClick={onNewSearch}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
+            style={{ background: "var(--surface-alt)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}
+          >
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2.5"/>
+              <path d="M21 21l-4.35-4.35" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+            </svg>
+            {t.newSearch}
+          </button>
+        )}
+      </div>
 
       <div className="space-y-4">
         {recipes.map((recipe, i) => {
           const pct = recipe.matchPercent ?? 0;
           const matchClass = pct >= 80 ? "match-high" : pct >= 60 ? "match-medium" : "match-low";
-          const matchLabel = pct >= 80 ? "Perfecte match" : pct >= 60 ? "Goede match" : "Gedeeltelijke match";
+          const matchLabel = pct >= 80 ? t.perfectMatch : pct >= 60 ? t.goodMatch : t.partialMatch;
 
           return (
             <div
@@ -72,11 +103,11 @@ export default function RecipeResults({ pantry, onSelect }: Props) {
                   )}
                   <span className="text-xs px-2 py-1 rounded-full font-medium"
                     style={{ background: "var(--surface-alt)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}>
-                    {difficultyLabel(recipe.difficulty)}
+                    {difficultyLabel(recipe.difficulty, lang)}
                   </span>
                   <span className="text-xs px-2 py-1 rounded-full font-medium"
                     style={{ background: "var(--surface-alt)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}>
-                    {recipe.servings} pers.
+                    {recipe.servings} {lang === "en" ? "serv." : "pers."}
                   </span>
                 </div>
               </div>
@@ -92,6 +123,9 @@ export default function RecipeResults({ pantry, onSelect }: Props) {
   );
 }
 
-function difficultyLabel(d: string): string {
+function difficultyLabel(d: string, lang: Lang): string {
+  if (lang === "en") {
+    return d === "easy" ? "😊 Easy" : d === "medium" ? "🔥 Medium" : "⭐ Challenging";
+  }
   return d === "easy" ? "😊 Makkelijk" : d === "medium" ? "🔥 Gemiddeld" : "⭐ Uitdagend";
 }
